@@ -12,7 +12,7 @@ app = Flask( __name__ )
 @app.route( '/visiteurs/<matricule>/<mdp>' , methods = [ 'GET' ] )
 def seConnecter( matricule , mdp ) :
 	visiteur = modeleGSBRV.seConnecter( matricule , mdp )
-	
+
 	if visiteur != None and len( visiteur ) != 0 :
 		reponse = make_response( json.dumps( visiteur ) )
 		reponse.mimetype = 'application/json'
@@ -69,6 +69,20 @@ def getPraticiens() :
 		reponse.status_code = 404
 	return reponse
 	
+@app.route( '/motifs' , methods = [ 'GET' ] )
+def getMotifs() :
+	motifs = modeleGSBRV.getMotifs()
+	
+	if motifs != None :
+		reponse = make_response( json.dumps( motifs ) )
+		reponse.mimetype = 'application/json'
+		reponse.status_code = 200
+	else :
+		reponse = make_response( '' )
+		reponse.mimetype = 'application/json'
+		reponse.status_code = 404
+	return reponse
+		
 @app.route( '/medicaments' , methods = [ 'GET' ] )
 def getMedicaments() :
 	medicaments = modeleGSBRV.getMedicaments()

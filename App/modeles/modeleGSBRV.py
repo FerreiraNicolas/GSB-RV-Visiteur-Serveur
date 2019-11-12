@@ -37,9 +37,10 @@ def seConnecter( matricule , mdp ) :
 					) 
 					and t1.tra_role <> 'Responsable'
 					and Visiteur.vis_matricule = %s
+					and Visiteur.vis_mdp= %s
 				'''
 
-		curseur.execute( requete , ( matricule , ) )
+		curseur.execute( requete , ( matricule , mdp ) )
 		
 		enregistrement = curseur.fetchone()
 		
@@ -185,6 +186,58 @@ def getMedicaments() :
 		return None
 
 
+
+def getMotifs() :
+	try :
+		curseur = getConnexionBD().cursor()
+		requete = '''
+					select *
+					from Motif
+				'''
+		
+		curseur.execute( requete , () )
+		
+		enregistrements = curseur.fetchall()
+		
+		motifs = []
+		for unEnregistrement in enregistrements :
+			unMotif = {}
+			unMotif[ 'mot_id' ] = unEnregistrement[ 0 ]
+			unMotif[ 'mot_libelle' ] = unEnregistrement[ 1 ]
+			unMotif[ 'mot_precision' ] = unEnregistrement[ 2 ]
+			motifs.append( unMotif )
+			
+		curseur.close()
+		return motifs
+		
+	except :
+		return None
+		
+def getMdpVisiteur() :
+	try :
+		curseur = getConnexionBD().cursor()
+		requete = '''
+					select vis_mdp
+					from Visiteur
+					where vis_matricule=%s
+				'''
+		
+		curseur.execute( requete , () )
+		
+		enregistrements = curseur.fetchall()
+		
+		mdp = []
+		for unEnregistrement in enregistrements :
+			unMdp = {}
+			unMdp[ 'vis_mdp' ] = unEnregistrement[ 0 ]
+
+			mdp.append( unMdp )
+			
+		curseur.close()
+		return mdp
+		
+	except :
+		return None
 	
 
 def genererNumeroRapportVisite( matricule ) :
