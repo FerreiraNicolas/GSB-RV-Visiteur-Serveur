@@ -3,7 +3,7 @@
 
 
 import mysql.connector
-
+from datetime import date
 
 connexionBD = None
 
@@ -266,7 +266,7 @@ def genererNumeroRapportVisite( matricule ) :
 		return None
 
 
-def enregistrerRapportVisite( matricule  ,dateVisite,  bilan , dateSaisie , coeffConfiance ,numPraticien, motif ) :
+def enregistrerRapportVisite( matricule  ,dateVisite,  bilan , coeffConfiance ,numPraticien, motif ) :
 	
 	numRapportVisite = genererNumeroRapportVisite( matricule )
 	
@@ -280,7 +280,7 @@ def enregistrerRapportVisite( matricule  ,dateVisite,  bilan , dateSaisie , coef
 				values( %s , %s , %s , %s , %s , %s , %s , %s )
 				'''
 
-			curseur.execute( requete, ( matricule , numRapportVisite , dateVisite , bilan , dateSaisie , coeffConfiance ,numPraticien, motif ) )
+			curseur.execute( requete, ( matricule , numRapportVisite , dateVisite , bilan , date.today() , coeffConfiance ,numPraticien, motif ) )
 			connexionBD.commit()
 			curseur.close()
 
